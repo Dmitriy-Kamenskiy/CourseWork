@@ -11,8 +11,7 @@ public class Main {
     public static File tsvFile = new File("categories.tsv");
 
     public static void main(String[] args) throws IOException {
-        Map<String, Categories> titleCategoryMap = new HashMap<>();
-        Map<String, Categories> categoryMap = new HashMap<>();
+        Categories categories = new Categories();
         String str;
         if (!tsvFile.exists()) return;
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(tsvFile))) {
@@ -21,8 +20,8 @@ public class Main {
                 for (int i = 0; i < titleCategoryArr.length; i++) {
                     String title = titleCategoryArr[0];
                     String category = titleCategoryArr[1];
-                    titleCategoryMap.put(title, new Categories(title,category,0));
-                    categoryMap.put(category, new Categories(title, category, 0));
+                    categories.titleCategoryMap.put(title, new Categories(title, category,0));
+                    categories.categoryMap.put(category, new Categories(title, category, 0));
                 }
             }
         }
@@ -37,27 +36,11 @@ public class Main {
                     {
                         String input = in.readLine();
                         System.out.println(input);
-                        JsonElement element =  JsonParser.parseString(input).getAsJsonObject().get("title");
-                        JsonElement sum = JsonParser.parseString(input).getAsJsonObject().get("sum");
-                        if (titleCategoryMap.containsKey(element.getAsString())) {
-                            for (Categories item : titleCategoryMap.values()) {
-                                if (item.getTitle().equals(element.getAsString())) {
-                                    String cat = item.getCategory();
-                                    categoryMap.get(cat).addSum(sum.getAsInt());
-                                    titleCategoryMap.get(element.getAsString()).addSum(sum.getAsInt());
-                                    break;
-                                }
-                            }
-                        }else {
-                            titleCategoryMap.put(element.getAsString(), new Categories(element.getAsString(), "другое", sum.getAsInt()));
-                            if (categoryMap.containsKey("другое")) {
-                                categoryMap.get("другое").addSum(sum.getAsInt());
-                            }else {
-                                categoryMap.put("другое",new Categories(element.getAsString(), "другое",sum.getAsInt()));
-                            }
-                        }
-                        Optional<Categories> maxCategories = categoryMap.values().stream().max(Comparator.comparingInt(Categories::getSum));
-                        maxCategories.ifPresent(Categories::getCategory);
+
+                        categories.categoryMap = categories.statistics(input, categories.titleCategoryMap, categories.categoryMap);
+
+                        Optional<Categories> maxCategories = categories.getMaxCategory();
+
                         JsonObject maxCategory = new JsonObject();
                         JsonObject jsonObject = new JsonObject();
                         maxCategory.add("category", new JsonPrimitive(maxCategories.get().getCategory()));
