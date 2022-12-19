@@ -10,7 +10,7 @@ public class Categories {
     private String title;
     private String category;
     private int sum;
-    private Map<String, String/*Categories*/> titleCategoryMap = new HashMap<>();
+    private Map<String, String> titleCategoryMap = new HashMap<>();
     private Map<String, Categories> categoryMap = new HashMap<>();
     public Categories(){}
     public Categories(String title, String category, int sum) {
