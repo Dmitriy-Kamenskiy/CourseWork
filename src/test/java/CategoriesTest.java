@@ -13,14 +13,14 @@ public class CategoriesTest {
     @Test
     public void statisticsTest() {
         Map<String, Categories> result = categories
-                .statistics(input, categories.titleCategoryMap, categories.categoryMap);
+                .statistics(input);
 
         Assertions.assertEquals("булка" ,result.get("другое").getTitle());
     }
 
     @Test
     public void getMaxCategoryTest() {
-        categories.categoryMap.put("пиво", new Categories("пиво", "другое", 100));
+        categories.addCategoryMap("пиво", "другое", 100);
         Optional<Categories> result = categories.getMaxCategory();
 
         Assertions.assertEquals(100,result.get().getSum());

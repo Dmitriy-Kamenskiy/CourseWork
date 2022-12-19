@@ -5,7 +5,6 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Main {
     public static File tsvFile = new File("categories.tsv");
@@ -20,8 +19,8 @@ public class Main {
                 for (int i = 0; i < titleCategoryArr.length; i++) {
                     String title = titleCategoryArr[0];
                     String category = titleCategoryArr[1];
-                    categories.titleCategoryMap.put(title, new Categories(title, category,0));
-                    categories.categoryMap.put(category, new Categories(title, category, 0));
+                    categories.addTitleCategoryMap(title, category);
+                    categories.addCategoryMap(category, title, 0);
                 }
             }
         }
@@ -37,7 +36,7 @@ public class Main {
                         String input = in.readLine();
                         System.out.println(input);
 
-                        categories.categoryMap = categories.statistics(input, categories.titleCategoryMap, categories.categoryMap);
+                        categories.statistics(input);
 
                         Optional<Categories> maxCategories = categories.getMaxCategory();
 

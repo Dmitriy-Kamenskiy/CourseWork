@@ -10,8 +10,8 @@ public class Categories {
     private String title;
     private String category;
     private int sum;
-    public Map<String, Categories> titleCategoryMap = new HashMap<>();
-    public Map<String, Categories> categoryMap = new HashMap<>();
+    private Map<String, String/*Categories*/> titleCategoryMap = new HashMap<>();
+    private Map<String, Categories> categoryMap = new HashMap<>();
     public Categories(){}
     public Categories(String title, String category, int sum) {
         this.title = title;
@@ -41,25 +41,31 @@ public class Categories {
     public void setSum(int sum) {
         this.sum = sum;
     }
-
-    public Map<String, Categories> statistics (String input, Map<String, Categories> titleCategoryMap, Map<String, Categories> categoryMap) {
+    public  Map<String, Categories> addCategoryMap(String category, String title, int sum) {
+        categoryMap.put(category, new Categories(title, category, sum));
+        return categoryMap;
+    }
+    public Map<String, String> addTitleCategoryMap(String title, String category) {
+        titleCategoryMap.put(title, category);
+        return titleCategoryMap;
+    }
+    public Map<String, Categories> statistics (String input) {
         JsonElement element =  JsonParser.parseString(input).getAsJsonObject().get("title");
         JsonElement sum = JsonParser.parseString(input).getAsJsonObject().get("sum");
         if (titleCategoryMap.containsKey(element.getAsString())) {
-            for (Categories item : titleCategoryMap.values()) {
-                if (item.getTitle().equals(element.getAsString())) {
-                    String cat = item.getCategory();
+            for (String item : titleCategoryMap.keySet()) {
+                if (item.equals(element.getAsString())) {
+                    String cat = titleCategoryMap.get(item);
                     categoryMap.get(cat).addSum(sum.getAsInt());
-                    titleCategoryMap.get(element.getAsString()).addSum(sum.getAsInt());
                     break;
                 }
             }
         }else {
-            titleCategoryMap.put(element.getAsString(), new Categories(element.getAsString(), "другое", sum.getAsInt()));
+            titleCategoryMap.put(element.getAsString(), "другое");
             if (categoryMap.containsKey("другое")) {
                 categoryMap.get("другое").addSum(sum.getAsInt());
             }else {
-                categoryMap.put("другое",new Categories(element.getAsString(), "другое",sum.getAsInt()));
+                categoryMap.put("другое",new Categories(element.getAsString(), "другое", sum.getAsInt()));
             }
         }
         return categoryMap;
