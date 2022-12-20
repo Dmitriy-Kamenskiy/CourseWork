@@ -7,14 +7,14 @@ import java.util.Map;
 import java.util.Optional;
 
 public class Categories {
-    private String title;
+//    private Statistic title;
     private String category;
     private int sum;
-    private Map<String, String> titleCategoryMap = new HashMap<>();
+
     private Map<String, Categories> categoryMap = new HashMap<>();
     public Categories(){}
-    public Categories(String title, String category, int sum) {
-        this.title = title;
+    public Categories(/*Statistic title, */String category, int sum) {
+//        this.title = title;
         this.category = category;
         this.sum = sum;
     }
@@ -22,9 +22,9 @@ public class Categories {
     public void addSum(int sum) {
         this.sum += sum;
     }
-    public String getTitle() {
-        return title;
-    }
+//    public String getTitle() {
+//        return title;
+//    }
 
     public String getCategory() {
         return category;
@@ -41,15 +41,16 @@ public class Categories {
     public void setSum(int sum) {
         this.sum = sum;
     }
-    public  Map<String, Categories> addCategoryMap(String category, String title, int sum) {
-        categoryMap.put(category, new Categories(title, category, sum));
+    public  Map<String, Categories> addCategoryMap(String category/*, String title*/, int sum) {
+        categoryMap.put(category, new Categories(/*title,*/ category, sum));
         return categoryMap;
     }
-    public Map<String, String> addTitleCategoryMap(String title, String category) {
-        titleCategoryMap.put(title, category);
-        return titleCategoryMap;
-    }
-    public Map<String, Categories> statistics (String input) {
+//    public Map<String, String> addTitleCategoryMap(String title, String category) {
+//        titleCategoryMap.put(title, category);
+//        return titleCategoryMap;
+//    }
+    public Map<String, Categories> statistics (String input, Statistic statistic, Categories category) {
+        Map<String, String> titleCategoryMap = statistic.getTitleCategoryMap();
         JsonElement element =  JsonParser.parseString(input).getAsJsonObject().get("title");
         JsonElement sum = JsonParser.parseString(input).getAsJsonObject().get("sum");
         if (titleCategoryMap.containsKey(element.getAsString())) {
@@ -65,7 +66,7 @@ public class Categories {
             if (categoryMap.containsKey("другое")) {
                 categoryMap.get("другое").addSum(sum.getAsInt());
             }else {
-                categoryMap.put("другое",new Categories(element.getAsString(), "другое", sum.getAsInt()));
+                categoryMap.put("другое",new Categories(/*element.getAsString(),*/ "другое", sum.getAsInt()));
             }
         }
         return categoryMap;

@@ -11,6 +11,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         Categories categories = new Categories();
+        Statistic statistic = new Statistic();
         String str;
         if (!tsvFile.exists()) return;
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(tsvFile))) {
@@ -19,8 +20,8 @@ public class Main {
                 for (int i = 0; i < titleCategoryArr.length; i++) {
                     String title = titleCategoryArr[0];
                     String category = titleCategoryArr[1];
-                    categories.addTitleCategoryMap(title, category);
-                    categories.addCategoryMap(category, title, 0);
+                    /*categories*/statistic.addTitleCategoryMap(title, category);
+                    categories.addCategoryMap(category, /*title,*/ 0);
                 }
             }
         }
@@ -36,7 +37,7 @@ public class Main {
                         String input = in.readLine();
                         System.out.println(input);
 
-                        categories.statistics(input);
+                        categories.statistics(input, statistic, categories);
 
                         Optional<Categories> maxCategories = categories.getMaxCategory();
 
