@@ -3,9 +3,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Scanner;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 
 public class ClientSocket {
@@ -18,6 +15,7 @@ public class ClientSocket {
         try (Socket socket = new Socket(host, port);
              PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
              BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
+
             out.println(info);
             String response = in.readLine();
             System.out.println(response);

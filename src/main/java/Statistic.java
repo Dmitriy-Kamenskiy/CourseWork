@@ -4,7 +4,7 @@ import java.util.Map;
 public class Statistic {
     private String title;
     private String category;
-    private int sum;
+
     private  Map<String, String> titleCategoryMap = new HashMap<>();
 
     public Statistic(){};
@@ -32,15 +32,4 @@ public class Statistic {
         this.category = category;
     }
 
-    public int getSum() {
-        return sum;
-    }
-
-    public void setSum(int sum) {
-        this.sum = sum;
-    }
-
-    public void addSum(int sum) {
-        this.sum += sum;
-    }
 }
