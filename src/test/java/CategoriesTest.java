@@ -7,20 +7,20 @@ import java.util.Optional;
 
 public class CategoriesTest {
     Categories categories = new Categories();
+    Statistic statistic = new Statistic();
     String input = "{\"title\": \"булка\", \"date\": \"2022.02.08\", \"sum\": 200}";
 
 
     @Test
     public void statisticsTest() {
-        Map<String, Categories> result = categories
-                .statistics(input, categories.titleCategoryMap, categories.categoryMap);
-
-        Assertions.assertEquals("булка" ,result.get("другое").getTitle());
+        Map<String, Categories> map = categories.statistics(input, statistic, categories);
+        String result = statistic.getTitleCategoryMap().get("булка");
+        Assertions.assertEquals("другое" ,result);
     }
 
     @Test
     public void getMaxCategoryTest() {
-        categories.categoryMap.put("пиво", new Categories("пиво", "другое", 100));
+        categories.addCategoryMap(/*"пиво", */"другое", 100);
         Optional<Categories> result = categories.getMaxCategory();
 
         Assertions.assertEquals(100,result.get().getSum());
