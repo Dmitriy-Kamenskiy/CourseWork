@@ -4,7 +4,6 @@ import com.google.gson.JsonParser;
 import java.util.*;
 
 public class Categories {
-//    private Statistic title;
     private String category;
     private int sum;
 
